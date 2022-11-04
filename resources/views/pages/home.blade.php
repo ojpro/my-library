@@ -6,6 +6,9 @@
 
     <title>{{  config("app.name","My Library") }}</title>
 
+    {{-- LOading Script & Styles --}}
+    @vite('resources/js/app.js')
+
 </head>
 <body class="antialiased">
 
