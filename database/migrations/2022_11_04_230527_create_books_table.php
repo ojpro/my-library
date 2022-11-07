@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->string('title')->unique()->index();
             $table->text('description');
+            // TODO: there must be a unique file_path
             $table->string('file_path');
             $table->timestamps();
         });
