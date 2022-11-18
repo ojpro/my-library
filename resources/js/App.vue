@@ -1,9 +1,15 @@
 <template>
-  <h1 class="text-green-500 text-center my-5"> TailwindCSS + Flowbite + JS = 💚</h1>
+  <DefaultLayout></DefaultLayout>
 </template>
 
 <script>
+import DefaultLayout from "@/Layouts/Default.vue";
+
 export default {
-  name: "App"
+  name: "App",
+  components: {
+    DefaultLayout
+  }
+
 }
 </script>
