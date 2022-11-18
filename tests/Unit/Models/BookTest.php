@@ -29,7 +29,7 @@ class BookTest extends TestCase
      *
      * @return void
      */
-    public function test_reate_new_book_record()
+    public function test_create_new_book_record()
     {
         $book_information = [
             "title" => "Rich Dad Poor Dad",
