@@ -2,12 +2,9 @@ import './bootstrap';
 import '../css/app.css';
 
 // import flowbite
-import "flowbite/dist/flowbite";
+import '@themesberg/flowbite';
 
-// Import Vue
-import {createApp} from 'vue';
+import {createApp} from 'vue'
+import App from './App.vue'
 
-// Import Vue Components
-import App from '@/Pages/App.vue';
-
-createApp(App).mount("#app");
+createApp(App).mount('#app')
