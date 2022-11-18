@@ -19,7 +19,7 @@ class BookTest extends TestCase
             "file_path" => null
         ];
 
-        $book = $this->post(route("book.store", $invalid_book_information));
+        $book = $this->post(route("api.books.store", $invalid_book_information));
 
         $book->assertInvalid();
     }
@@ -37,7 +37,7 @@ class BookTest extends TestCase
             "file_path" => "/pdfs/17847634-rich_dad_poor_dad.pdf"
         ];
 
-        $this->post(route("book.store"), $book_information);
+        $this->post(route("api.books.store"), $book_information);
 
         $this->assertDatabaseHas("books", $book_information);
     }
@@ -52,7 +52,7 @@ class BookTest extends TestCase
         // Create a [fake] book
         $created_book = Book::factory()->create();
 
-        $returned_book = $this->get(route("book.show", $created_book["id"]));
+        $returned_book = $this->get(route("api.books.show", $created_book));
 
         // TODO: improve tests
         $this->assertSame($returned_book["title"], $created_book["title"]);
@@ -68,7 +68,7 @@ class BookTest extends TestCase
         // Create [faked] books
         Book::factory()->count(3)->create();
 
-        $books = $this->get(route("book.index"));
+        $books = $this->get(route("api.books.index"));
 
         $books->assertJsonCount(3);
 
@@ -86,7 +86,7 @@ class BookTest extends TestCase
 
         $new_book_information = Book::factory()->make();
 
-        $this->patch(route("book.update", $old_book_information["id"]), $new_book_information->toArray());
+        $this->patch(route("api.books.update", $old_book_information), $new_book_information->toArray());
 
         $this->assertDatabaseCount("books", 1)
             ->assertDatabaseHas("books", $new_book_information->toArray());
@@ -101,7 +101,7 @@ class BookTest extends TestCase
     {
         $book = Book::factory()->create();
 
-        $this->delete(route("book.destroy", $book["id"]));
+        $this->delete(route("api.books.destroy", $book["id"]));
 
         $this->assertDatabaseMissing("books", $book->toArray());
     }

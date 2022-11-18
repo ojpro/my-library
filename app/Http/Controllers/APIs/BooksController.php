@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\APIs;
 
+use App\Http\Controllers\Controller;
 use App\Models\Book;
 use Illuminate\Http\Request;
 
-class BookController extends Controller
+class BooksController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -23,9 +24,9 @@ class BookController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(Request $request)
     {
         $request->validate([
             "title" => ["required", "string", "min:5", "unique:books,title"],
@@ -39,19 +40,9 @@ class BookController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
-     * @param \App\Models\Book $book
+     * @param Book $book
      * @return \Illuminate\Http\Response
      */
     public function show(Book $book)
@@ -62,22 +53,11 @@ class BookController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\Book $book
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Book $book)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Book $book
-     * @return \Illuminate\Http\JsonResponse
+     * @param Book $book
+     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Book $book)
     {
@@ -97,12 +77,14 @@ class BookController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Book $book
-     * @return \Illuminate\Http\JsonResponse
+     * @param int $id
+     * @return \Illuminate\Http\Response
      */
-    public function destroy(Book $book)
+    public function destroy($id)
     {
-        $book = Book::findOrFail($book["id"]);
+        dd($id);
+
+        $book = Book::findOrFail($id);
 
         $book->delete();
 
