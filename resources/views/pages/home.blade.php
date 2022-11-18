@@ -11,6 +11,6 @@
 
 </head>
 <body class="antialiased">
-
+<main id="app"></main>
 </body>
 </html>
