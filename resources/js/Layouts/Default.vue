@@ -2,7 +2,7 @@
   <div>
     <header>
       <Navbar/>
-      <HeroSection/>
+      <slot></slot>
     </header>
   </div>
 </template>
@@ -10,11 +10,10 @@
 <script>
 
 import Navbar from "@/Components/Navbar.vue";
-import HeroSection from "@/Sections/Hero.vue";
 
 export default {
   name: "Default",
-  components: {Navbar, HeroSection}
+  components: {Navbar}
 }
 </script>
 

@@ -2,7 +2,7 @@
 
   <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
     <div class="container flex flex-wrap items-center justify-between mx-auto">
-      <a class="flex items-center" href="https://flowbite.com/">
+      <a class="flex items-center" href="/">
 
         <svg class="w-7 h-7 dark:text-white mr-2" fill="none" stroke="currentColor" stroke-width="1.5"
              viewBox="0 0 24 24"
