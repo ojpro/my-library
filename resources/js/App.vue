@@ -1,15 +1,14 @@
 <template>
-  <UploadPage></UploadPage>
+  <DefaultLayout></DefaultLayout>
+  <router-view></router-view>
 </template>
 
 <script>
-import UploadPage from "@/Pages/Upload.vue";
+import DefaultLayout from "@/Layouts/Default.vue";
 
 export default {
   name: "App",
-  components: {
-    UploadPage
-  }
+  components: {DefaultLayout}
 
 }
 </script>

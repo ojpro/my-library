@@ -1,16 +1,13 @@
 <template>
-  <DefaultLayout>
-    <HeroSection></HeroSection>
-  </DefaultLayout>
+  <HeroSection></HeroSection>
 </template>
 
 <script>
-import DefaultLayout from "@/Layouts/Default.vue";
 import HeroSection from "@/Sections/Hero.vue";
 
 export default {
   name: "Home",
-  components: {DefaultLayout, HeroSection}
+  components: {HeroSection}
 }
 </script>
 

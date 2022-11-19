@@ -2,7 +2,7 @@
 
   <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
     <div class="container flex flex-wrap items-center justify-between mx-auto">
-      <a class="flex items-center" href="/">
+      <router-link :to="{name:'home'}" class="flex items-center">
 
         <svg class="w-7 h-7 dark:text-white mr-2" fill="none" stroke="currentColor" stroke-width="1.5"
              viewBox="0 0 24 24"
@@ -14,13 +14,14 @@
         </svg>
 
         <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">My Library</span>
-      </a>
+      </router-link>
       <div class="flex md:order-2">
-        <button
+        <router-link
+            :to="{name:'upload'}"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             type="button">
           Upload New Book
-        </button>
+        </router-link>
         <button aria-controls="navbar-cta" aria-expanded="false"
                 class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                 data-collapse-toggle="navbar-cta" type="button">
@@ -36,9 +37,11 @@
       <div id="navbar-cta" class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
         <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
           <li>
-            <a aria-current="page"
-               class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
-               href="#">Home</a>
+            <router-link :to="{name:'home'}"
+                         aria-current="page"
+                         class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white">
+              Home
+            </router-link>
           </li>
           <li>
             <a class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
