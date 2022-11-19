@@ -3,6 +3,7 @@
 namespace Tests\Unit\Models;
 
 use App\Models\Book;
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class BookTest extends TestCase
@@ -14,14 +15,22 @@ class BookTest extends TestCase
      */
     public function test_validate_creation()
     {
-        $invalid_book_information = [
-            "description" => "101",
-            "file_path" => null
+        // define fake book information
+        $wrong_book_information = [
+            "title" => 9,
+            "description" => "won\'t work",
+            "file" => UploadedFile::fake()
+                ->create(
+                    "not-a-pdf-file.docx",
+                    51 * 1024,
+                    "application/pdf")
         ];
 
-        $book = $this->post(route("api.books.store", $invalid_book_information));
+        // send the request to create new book
+        $response = $this->post(route('api.books.store'), $wrong_book_information);
 
-        $book->assertInvalid();
+        $response->assertInvalid();
+
     }
 
     /**
