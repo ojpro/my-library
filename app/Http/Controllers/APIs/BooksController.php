@@ -59,8 +59,10 @@ class BooksController extends Controller
      */
     public function show(Book $book)
     {
+        // find the book
         $book = Book::findOrFail($book["id"])->first();
 
+        // return it
         return response()->json($book);
     }
 
