@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\APIs;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
 use Illuminate\Http\Request;
 
@@ -23,10 +25,10 @@ class BooksController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param StoreBookRequest
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreBookRequest $request)
     {
         $request->validate([
             "title" => ["required", "string", "min:5", "unique:books,title"],
