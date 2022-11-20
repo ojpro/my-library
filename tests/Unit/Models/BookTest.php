@@ -82,11 +82,16 @@ class BookTest extends TestCase
     {
         // Create a [fake] book
         $created_book = Book::factory()->create();
-
+        
+        // request book information
         $returned_book = $this->get(route("api.books.show", $created_book));
 
-        // TODO: improve tests
-        $this->assertSame($returned_book["title"], $created_book["title"]);
+        // Simplify variables for usability
+        $created_book = $created_book->toArray();
+        $returned_book = $returned_book->getOriginalContent()->toArray();
+
+        // assert that the both books are equal
+        $this->assertEquals($returned_book, $created_book);
     }
 
     /**
