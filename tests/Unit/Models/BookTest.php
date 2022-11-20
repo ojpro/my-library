@@ -142,9 +142,10 @@ class BookTest extends TestCase
     {
         $book = Book::factory()->create();
 
-        $this->delete(route("api.books.destroy", $book["id"]));
+        $this->delete(route("api.books.destroy", $book));
 
-        $this->assertDatabaseMissing("books", $book->toArray());
+        $this->assertDatabaseMissing("books", $book->toArray())
+            ->assertDatabaseCount("books", 0);
     }
 
     // TODO: add tests for the [edit & create] methods
