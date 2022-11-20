@@ -19,7 +19,7 @@ class BookFactory extends Factory
         return [
             'title' => fake()->name(),
             'description' => fake()->text(),
-            'file_path' => fake()->filePath()
+            'file_path' => "upload/books/" . $this->faker->name . ".pdf"
         ];
     }
 }
