@@ -102,19 +102,19 @@ class BooksController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param Book $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Book $book)
     {
-        dd($id);
+        // find the book
+        $book = Book::findOrFail($book["id"])->first();
 
-        $book = Book::findOrFail($id);
-
+        // remove it
         $book->delete();
 
-        //TODO: return better responses with [response code]
-
+        // TODO: return better responses with [response code]
+        // return success response
         return response()->json(["status" => "success"]);
     }
 }
