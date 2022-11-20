@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\Book;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class BookTest extends TestCase
@@ -40,15 +41,36 @@ class BookTest extends TestCase
      */
     public function test_create_new_book_record()
     {
-        $book_information = [
-            "title" => "Rich Dad Poor Dad",
-            "description" => "Best Financial Education Book by Robert Kyosaki",
-            "file_path" => "/pdfs/17847634-rich_dad_poor_dad.pdf"
-        ];
+        // fake all upload files to local disk
+        Storage::fake("local");
 
-        $this->post(route("api.books.store"), $book_information);
+        // create a fake file
+        $file = UploadedFile::fake()->create(
+            "rich-dad-pour-dad.pdf",
+            8 * 1024,
+            'application/pdf'
+        );
 
-        $this->assertDatabaseHas("books", $book_information);
+        // create a fake book
+        $book_information = Book::factory()->make([
+            "file" => $file
+        ]);
+
+        // send the request
+        $this->post(route("api.books.store"), $book_information->toArray());
+
+        // declare file_path
+        $file_path = "upload/books/" . time() . "_" . $file->getClientOriginalName();
+
+        // verify if the file is uploaded
+        Storage::disk('local')->assertExists($file_path);
+
+        // assert that the database has that uploaded book
+        $this->assertDatabaseHas("books", [
+            "title" => $book_information["title"],
+            "description" => $book_information["description"],
+            "file_path" => $file_path
+        ]);
     }
 
     /**
