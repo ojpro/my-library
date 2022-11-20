@@ -122,15 +122,32 @@ class BookTest extends TestCase
      */
     public function test_update_book_information()
     {
+        // make a fake upload on the local disk
+        Storage::fake('local');
 
+        // generate a fake book
         $old_book_information = Book::factory()->create();
 
+        // create a fake file
+        $file = UploadedFile::fake()->create(
+            "rich-dad-pour-dad.pdf",
+            8 * 1024,
+            'application/pdf'
+        );
+
+        // generate a new faked book
         $new_book_information = Book::factory()->make();
 
-        $this->patch(route("api.books.update", $old_book_information), $new_book_information->toArray());
-
-        $this->assertDatabaseCount("books", 1)
-            ->assertDatabaseHas("books", $new_book_information->toArray());
+        // send update request
+        $this->patch(
+            route("api.books.update", $old_book_information),
+            $new_book_information->toArray());
+        
+        // check if the book information updated
+        $this->assertDatabaseHas("books", [
+            "title" => $new_book_information["title"],
+            "description" => $new_book_information["description"]
+        ]);
     }
 
     /**
