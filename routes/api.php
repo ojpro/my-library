@@ -18,5 +18,5 @@ Route::controller(BooksController::class)->prefix("books")->name("api.books.")->
 
     Route::patch("/{book}", "update")->name("update");
 
-    Route::delete("/", "destroy")->name("destroy");
+    Route::delete("/{book}", "destroy")->name("destroy");
 });
