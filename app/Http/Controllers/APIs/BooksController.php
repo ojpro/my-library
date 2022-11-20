@@ -67,21 +67,34 @@ class BooksController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param UpdateBookRequest
      * @param Book $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Book $book)
+    public function update(UpdateBookRequest $request, Book $book)
     {
-        $request->validate([
-            "title" => ["required", "string", "min:5", "unique:books,title," . $book["id"]],
-            "description" => ["required", "string", "min:20"],
-            "file_path" => ["required", "string"]
-        ]);
+        // validate the request
+        $request->validated();
 
+        // check if the book exist
         $book = Book::findOrFail($book["id"])->first();
 
-        $book->update($request->all());
+        // TODO: update only updated values
+        // check if there is a file to upload
+        if ($request->file()) {
+            // generate a name for the uploaded file
+            $file_name = time() . "_" . $request->file("file")->getClientOriginalName();
+
+            // store the file on the storage
+            $file_path = Storage::putFileAs("upload/books", $request->file("file"), $file_name);
+        }
+
+        // update book info on the database
+        $book->update([
+            "title" => $request->title,
+            "description" => $request->description,
+            "file_path" => $file_path ?? $book->file_path
+        ]);
 
         return response()->json(["status" => "success"]);
     }
