@@ -102,12 +102,17 @@ class BookTest extends TestCase
     public function test_show_all_books()
     {
         // Create [faked] books
-        Book::factory()->count(3)->create();
+        $created_books = Book::factory()->count(3)->create();
 
-        $books = $this->get(route("api.books.index"));
+        // fetch all books from the database
+        $returned_books = $this->get(route("api.books.index"));
 
-        $books->assertJsonCount(3);
+        // Simplify variables for usability
+        $created_books = $created_books->toArray();
+        $returned_books = $returned_books->getOriginalContent()->toArray();
 
+        // check if they are equals
+        $this->assertEquals($returned_books, $created_books);
     }
 
     /**
