@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BooksController extends Controller
 {
@@ -30,14 +30,24 @@ class BooksController extends Controller
      */
     public function store(StoreBookRequest $request)
     {
-        $request->validate([
-            "title" => ["required", "string", "min:5", "unique:books,title"],
-            "description" => ["required", "string", "min:20"],
-            "file_path" => ["required", "string"]
+        // validate the request
+        $request->validated();
+
+        // generate a name for the uploaded file
+        $file_name = time() . "_" . $request->file("file")->getClientOriginalName();
+
+        // TODO: improve by using event and jobs + write single trait for handling uploading files
+        // store the file on the storage
+        $file_path = Storage::putFileAs("upload/books", $request->file("file"), $file_name);
+
+        // save book info on the database
+        Book::create([
+            "title" => $request->title,
+            "description" => $request->description,
+            "file_path" => $file_path
         ]);
 
-        Book::create($request->all(['title', 'description', 'file_path']));
-
+        // return success response
         return response()->json(["status" => "success"]);
     }
 
