@@ -6,7 +6,7 @@
 
     <hr class="my-2 h-px bg-gray-100 border-0 dark:bg-gray-700">
 
-    <form class="p-2">
+    <form class="p-2" enctype="multipart/form-data" method="post" @submit.prevent="publish">
 
       <!--   File Form   -->
       <div class="flex items-center justify-center w-full my-4">
@@ -24,7 +24,8 @@
                 class="font-semibold">Click to upload</span> or drag and drop</p>
             <p class="text-xs text-gray-500 dark:text-gray-400">PDF, EPUB or Mobi (MAX. 50Mb)</p>
           </div>
-          <input id="dropzone-file" accept="application/pdf" class="hidden" type="file"/>
+          <input id="dropzone-file" accept="application/pdf" class="hidden" type="file"
+                 @change="catchSelectedFile($event)"/>
         </label>
       </div>
       <!-- !  File Form   -->
@@ -34,9 +35,10 @@
         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="title">Book
           Title</label>
         <input id="title"
-               class="bg-gray-50 border border-gray-500 text-gray-900 dark:text-gray-400 placeholder-gray-700 dark:placeholder-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-500"
+               v-model="form.title"
+               class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                placeholder="Book's Title"
-               type="text">
+               required type="text">
         <p class="mt-2 text-sm text-green-600 dark:text-green-500"><span class="font-medium">Well done!</span> Some
           success message.</p>
       </div>
@@ -47,8 +49,9 @@
         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="description">Book
           Description</label>
         <textarea id="description"
+                  v-model="form.description"
                   class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Write description about this book..."
+                  placeholder="Write description about this book..." required
                   rows="4"></textarea>
       </div>
       <!-- !   Book Description    -->
@@ -57,10 +60,10 @@
       <div class="flex items-start mb-6">
         <div class="flex items-center h-5">
           <input id="terms"
+                 v-model="form.accept_term"
                  class="w-4 h-4 bg-gray-50 rounded border border-gray-300 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
                  required
-                 type="checkbox"
-                 value="">
+                 type="checkbox">
         </div>
         <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="terms">I agree with the <a
             class="text-blue-600 hover:underline dark:text-blue-500" href="#">terms and conditions</a></label>
@@ -70,8 +73,9 @@
       <!--    Book Submit    -->
       <div class="mt-6">
         <button
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-            type="button">
+            :disabled=!form.accept_term
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 dark:disabled:bg-blue-400 disabled:bg-blue-400 disabled:cursor-not-allowed"
+            type="submit">
           Publish This Book
         </button>
       </div>
@@ -84,8 +88,53 @@
 
 <script>
 
+import axios from "axios";
+
 export default {
-  name: "Upload"
+  name: "Upload",
+  data() {
+    return {
+      form: {
+        file: null,
+        title: "",
+        description: "",
+        accept_term: false
+      },
+      errors: null
+    }
+  },
+  methods: {
+    catchSelectedFile: function (event) {
+      // store the selected file object
+      let file = event.target.files || event.dataTransfer.files;
+      // check if there is a file
+      if (file.length) {
+        this.form.file = file[0];
+      }
+      // change file field border
+      event.target.parentElement.classList.add('border-blue-400', 'dark:border-blue-400', 'hover:border-blue-300', 'dark:hover:border-blue-300')
+    },
+    publish: async function () {
+      // declare form data to send
+      let formData = new FormData();
+      formData.append("file", this.form.file)
+      formData.append("title", this.form.title)
+      formData.append("description", this.form.description)
+      // sent request to upload the book
+      // TODO: use global configured axios
+      await axios.post("api/books/", formData)
+          .then((res) => {
+            if (res.errors) {
+              // TODO: implement error messages
+              console.log(res.errors)
+            } else if (res.data.success) {
+              // TODO: what to do after uploading completed
+              alert("success")
+            }
+
+          })
+    }
+  }
 }
 </script>
 
