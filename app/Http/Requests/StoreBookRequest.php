@@ -30,4 +30,6 @@ class StoreBookRequest extends FormRequest
             "file" => ["required", File::types(['pdf', 'epub', 'mobi'])->max(50 * 1024)]
         ];
     }
+
+    // TODO: return more user friendly messages
 }
