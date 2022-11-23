@@ -11,7 +11,8 @@
       <!--   File Form   -->
       <div class="flex items-center justify-center w-full my-4">
         <label
-            class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+            :class=" errors.file ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'"
+            class="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:hover:border-gray-500 dark:hover:bg-gray-600"
             for="dropzone-file">
           <div class="flex flex-col items-center justify-center pt-5 pb-6">
             <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor"
@@ -28,6 +29,10 @@
                  @change="catchSelectedFile($event)"/>
         </label>
       </div>
+      <!--   TODO: improve the error messages   -->
+      <p v-if="errors.file" class="mt-2 text-sm text-red-600 dark:text-red-500">
+        {{ errors.file[0] }}
+      </p>
       <!-- !  File Form   -->
 
       <!--    Book Title    -->
@@ -36,11 +41,14 @@
           Title</label>
         <input id="title"
                v-model="form.title"
-               class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+               :class=" errors.title ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'"
+               class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+               minlength="3"
                placeholder="Book's Title"
                required type="text">
-        <p class="mt-2 text-sm text-green-600 dark:text-green-500"><span class="font-medium">Well done!</span> Some
-          success message.</p>
+        <p v-if="errors.title" class="mt-2 text-sm text-red-600 dark:text-red-500">
+          {{ errors.title[0] }}
+        </p>
       </div>
       <!-- !   Book Title    -->
 
@@ -50,9 +58,15 @@
           Description</label>
         <textarea id="description"
                   v-model="form.description"
-                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  :class=" errors.description ? 'border-red-300 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'"
+                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+
                   placeholder="Write description about this book..." required
                   rows="4"></textarea>
+
+        <p v-if="errors.description" class="mt-2 text-sm text-red-600 dark:text-red-500">
+          {{ errors.description[0] }}
+        </p>
       </div>
       <!-- !   Book Description    -->
 
@@ -100,7 +114,11 @@ export default {
         description: "",
         accept_term: false
       },
-      errors: null
+      errors: {
+        file: null,
+        title: null,
+        description: null
+      }
     }
   },
   methods: {
@@ -123,16 +141,14 @@ export default {
       // sent request to upload the book
       // TODO: use global configured axios
       await axios.post("api/books/", formData)
-          .then((res) => {
-            if (res.errors) {
-              // TODO: implement error messages
-              console.log(res.errors)
-            } else if (res.data.success) {
-              // TODO: what to do after uploading completed
-              alert("success")
-            }
-
+          // redirect to the home page if there is no errors
+          .then(_ => this.$router.push("/"))
+          // catch response errors
+          .catch(({response}) => {
+            // Stored errors on one variable to display them on the form
+            this.errors = response.data.errors
           })
+
     }
   }
 }
