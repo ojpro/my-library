@@ -82,7 +82,7 @@ class BookTest extends TestCase
     {
         // Create a [fake] book
         $created_book = Book::factory()->create();
-        
+
         // request book information
         $returned_book = $this->get(route("api.books.show", $created_book));
 
@@ -111,6 +111,7 @@ class BookTest extends TestCase
         $created_books = $created_books->toArray();
         $returned_books = $returned_books->getOriginalContent()->toArray();
 
+        // TODO: improve verification method
         // check if they are equals
         $this->assertEquals($returned_books, $created_books);
     }
@@ -142,7 +143,7 @@ class BookTest extends TestCase
         $this->patch(
             route("api.books.update", $old_book_information),
             $new_book_information->toArray());
-        
+
         // check if the book information updated
         $this->assertDatabaseHas("books", [
             "title" => $new_book_information["title"],
