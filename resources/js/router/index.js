@@ -1,6 +1,7 @@
+import {createRouter, createWebHistory} from "vue-router";
 import Home from "@/Pages/Home.vue";
 import Upload from "@/Pages/Upload.vue";
-import {createRouter, createWebHistory} from "vue-router";
+import Books from "@/Pages/Books.vue";
 
 const routes = [
     {
@@ -12,6 +13,11 @@ const routes = [
         path: "/upload",
         name: "upload",
         component: Upload
+    },
+    {
+        path: "/books",
+        name: "books",
+        component: Books
     }
 ]
 
