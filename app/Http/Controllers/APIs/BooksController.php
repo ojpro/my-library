@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 
 class BooksController extends Controller
@@ -13,12 +15,21 @@ class BooksController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::all();
-
+        // check if there is a search request
+        if ($request->query('query')) {
+            // search that query in the [title, description]
+            $books = Book::query()
+                ->where('title', 'LIKE', "%" . request('query') . "%")
+                ->orWhere('description', 'LIKE', "%" . request('query') . "%")
+                ->get();
+        } else { // other ways return all books
+            $books = Book::all();
+        }
+        // return the result
         return response()->json($books);
     }
 
