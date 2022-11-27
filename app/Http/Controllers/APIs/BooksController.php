@@ -37,7 +37,7 @@ class BooksController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreBookRequest
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(StoreBookRequest $request)
     {
@@ -66,7 +66,7 @@ class BooksController extends Controller
      * Display the specified resource.
      *
      * @param Book $book
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(Book $book)
     {
@@ -82,7 +82,7 @@ class BooksController extends Controller
      *
      * @param UpdateBookRequest
      * @param Book $book
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(UpdateBookRequest $request, Book $book)
     {
@@ -116,7 +116,7 @@ class BooksController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Book $book
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Book $book)
     {

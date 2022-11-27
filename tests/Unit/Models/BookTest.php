@@ -14,7 +14,7 @@ class BookTest extends TestCase
      *
      * @return void
      */
-    public function test_validate_creation()
+    public function test_validate_creation(): void
     {
         // define fake book information
         $wrong_book_information = [
@@ -39,7 +39,7 @@ class BookTest extends TestCase
      *
      * @return void
      */
-    public function test_create_new_book_record()
+    public function test_create_new_book_record(): void
     {
         // fake all upload files to local disk
         Storage::fake("local");
@@ -78,7 +78,7 @@ class BookTest extends TestCase
      *
      * @return void
      */
-    public function test_get_book_information()
+    public function test_get_book_information(): void
     {
         // Create a [fake] book
         $created_book = Book::factory()->create();
@@ -99,7 +99,7 @@ class BookTest extends TestCase
      *
      * @return void
      */
-    public function test_show_all_books()
+    public function test_show_all_books(): void
     {
         // Create [faked] books
         $created_books = Book::factory()->count(3)->create();
@@ -121,7 +121,7 @@ class BookTest extends TestCase
      *
      * @return void
      */
-    public function test_update_book_information()
+    public function test_update_book_information(): void
     {
         // make a fake upload on the local disk
         Storage::fake('local');
@@ -156,7 +156,7 @@ class BookTest extends TestCase
      *
      * @return void
      */
-    public function test_delete_a_book()
+    public function test_delete_a_book(): void
     {
         $book = Book::factory()->create();
 
