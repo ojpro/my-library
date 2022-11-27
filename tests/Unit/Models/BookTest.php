@@ -166,5 +166,29 @@ class BookTest extends TestCase
             ->assertDatabaseCount("books", 0);
     }
 
+    /**
+     * Test to validate search method
+     */
+    public function test_searching_for_books()
+    {
+        // Generate 3 books with only 2 having similar word
+        $book_1 = Book::factory()->create([
+            'title' => "How to success in your life"
+        ]);
+        $book_2 = Book::factory()->create([
+            'title' => "Now when to leave"
+        ]);
+        $book_3 = Book::factory()->create([
+            'title' => "10 successful business modules"
+        ]);
+
+        // send search request with query
+        $response = $this->get(route('api.books.index', ['query' => 'success']));
+
+        // check if it's working
+        $this->assertEquals([$book_1->toArray(), $book_3->toArray()], $response->getOriginalContent()->toArray());
+
+    }
+
     // TODO: add tests for the [edit & create] methods
 }
