@@ -90,7 +90,7 @@ class BooksController extends Controller
         $request->validated();
 
         // check if the book exist
-        $book = Book::findOrFail($book["id"])->first();
+        $book = Book::findOrFail($book["id"]);
 
         // TODO: update only updated values
         // check if there is a file to upload

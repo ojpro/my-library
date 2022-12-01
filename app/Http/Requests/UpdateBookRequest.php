@@ -27,7 +27,7 @@ class UpdateBookRequest extends FormRequest
         return [
             "title" => ["string", "min:5", "unique:books,title," . $this->book["id"]],
             "description" => ["string", "min:20"],
-            "file" => [File::types(['pdf', 'epub', 'mobi'])->max(50 * 1024)]
+            "file" => [File::types(['pdf', 'epub', 'mobi'])->max(50 * 1024), 'nullable']
         ];
     }
 }
