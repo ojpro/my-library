@@ -28,7 +28,7 @@ class BookTest extends TestCase
         ];
 
         // send the request to create new book
-        $response = $this->post(route('api.books.store'), $wrong_book_information);
+        $response = $this->post(route('books.store'), $wrong_book_information);
 
         $response->assertInvalid();
 
@@ -57,7 +57,7 @@ class BookTest extends TestCase
         ]);
 
         // send the request
-        $this->post(route("api.books.store"), $book_information->toArray());
+        $this->post(route("books.store"), $book_information->toArray());
 
         // declare file_path
         $file_path = "upload/books/" . time() . "_" . $file->getClientOriginalName();
@@ -84,7 +84,7 @@ class BookTest extends TestCase
         $created_book = Book::factory()->create();
 
         // request book information
-        $returned_book = $this->get(route("api.books.show", $created_book));
+        $returned_book = $this->get(route("books.show", $created_book));
 
         // Simplify variables for usability
         $created_book = $created_book->toArray();
@@ -105,7 +105,7 @@ class BookTest extends TestCase
         $created_books = Book::factory()->count(3)->create();
 
         // fetch all books from the database
-        $returned_books = $this->get(route("api.books.index"));
+        $returned_books = $this->get(route("books.index"));
 
         // Simplify variables for usability
         $created_books = $created_books->toArray();
@@ -141,7 +141,7 @@ class BookTest extends TestCase
 
         // send update request
         $this->patch(
-            route("api.books.update", $old_book_information),
+            route("books.update", $old_book_information),
             $new_book_information->toArray());
 
         // check if the book information updated
@@ -160,7 +160,7 @@ class BookTest extends TestCase
     {
         $book = Book::factory()->create();
 
-        $this->delete(route("api.books.destroy", $book));
+        $this->delete(route("books.destroy", $book));
 
         $this->assertDatabaseMissing("books", $book->toArray())
             ->assertDatabaseCount("books", 0);
@@ -183,7 +183,7 @@ class BookTest extends TestCase
         ]);
 
         // send search request with query
-        $response = $this->get(route('api.books.index', ['query' => 'success']));
+        $response = $this->get(route('books.index', ['query' => 'success']));
 
         // check if it's working
         $this->assertEquals([$book_1->toArray(), $book_3->toArray()], $response->getOriginalContent()->toArray());
