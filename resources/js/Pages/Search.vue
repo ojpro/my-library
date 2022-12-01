@@ -25,7 +25,12 @@ export default {
     }
   },
   mounted() {
-    this.searchValue()
+    // check if there is a query to search for
+    let search = new URLSearchParams(window.location.search);
+    let query = search.get('query') || ''
+    // TODO: set search input value to the request query
+    // searching..
+    this.searchValue(query)
   },
   methods: {
     searchValue: async function (value = '') {
