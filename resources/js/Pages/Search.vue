@@ -26,8 +26,7 @@ export default {
   },
   mounted() {
     // check if there is a query to search for
-    let search = new URLSearchParams(window.location.search);
-    let query = search.get('query') || ''
+    let query = this.$route.query.query || ''
     // TODO: set search input value to the request query
     // searching..
     this.searchValue(query)
