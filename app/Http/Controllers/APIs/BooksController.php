@@ -50,13 +50,13 @@ class BooksController extends Controller
 
         // TODO: improve by using event and jobs + write single trait for handling uploading files
         // store the file on the storage
-        $file_path = Storage::putFileAs("upload/books", $request->file("file"), $file_name);
+        $file_path = Storage::disk('public')->putFileAs("upload/books", $request->file("file"), $file_name);
 
         // save book info on the database
         Book::create([
             "title" => $request->title,
             "description" => $request->description,
-            "file_path" => $file_path
+            "file_path" => Storage::url($file_path)
         ]);
 
         // return success response
@@ -100,14 +100,14 @@ class BooksController extends Controller
             $file_name = time() . "_" . $request->file("file")->getClientOriginalName();
 
             // store the file on the storage
-            $file_path = Storage::putFileAs("upload/books", $request->file("file"), $file_name);
+            $file_path = Storage::disk('public')->putFileAs("upload/books", $request->file("file"), $file_name);
         }
 
         // update book info on the database
         $book->update([
             "title" => $request->title,
             "description" => $request->description,
-            "file_path" => $file_path ?? $book->file_path
+            "file_path" => Storage::url($file_path) ?? $book->file_path
         ]);
 
         return response()->json(["status" => "success"]);
