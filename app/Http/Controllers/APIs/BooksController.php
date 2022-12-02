@@ -101,13 +101,15 @@ class BooksController extends Controller
 
             // store the file on the storage
             $file_path = Storage::disk('public')->putFileAs("upload/books", $request->file("file"), $file_name);
+            $file_path = Storage::url($file_path);
         }
 
+        // TODO: delete old file
         // update book info on the database
         $book->update([
             "title" => $request->title,
             "description" => $request->description,
-            "file_path" => Storage::url($file_path) ?? $book->file_path
+            "file_path" => $file_path ?? $book->file_path
         ]);
 
         return response()->json(["status" => "success"]);
@@ -122,10 +124,15 @@ class BooksController extends Controller
     public function destroy(Book $book)
     {
         // find the book
-        $book = Book::findOrFail($book["id"])->first();
+        $book = Book::findOrFail($book["id"]);
 
-        // remove it
-        $book->delete();
+        // Remove the book file
+        if (Storage::disk('public')->delete($book["file_path"])) {
+            // remove record from database
+            $book->delete();
+        } else {
+            return response()->json('Something wrong, please try again.', 404);
+        }
 
         // TODO: return better responses with [response code]
         // return success response

@@ -73,11 +73,18 @@
       <!-- !   Book Description    -->
 
       <!--    Book Submit    -->
-      <div class="mt-6">
+      <div class="mt-6 flex justify-between">
         <button
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             type="submit">
           Update This Book
+        </button>
+
+        <button
+            class="text-red-600 hover:text-white bg-transparent border-2 border-red-600 hover:bg-red-600 transition focus:ring-1 focus:ring-red-500 font-medium rounded-lg text-sm px-5 py-2.5 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-700"
+            type="button"
+            @click="deleteBook">
+          Delete
         </button>
       </div>
       <!-- !   Book Submit    -->
@@ -161,6 +168,18 @@ export default {
             this.errors = response.data.errors
           })
 
+    },
+    deleteBook: async function () {
+      if (confirm("Are you sure you wanna delete this book ?")) {
+        await axios.delete('/api/books/' + this.getBookID())
+            .then(_ => {
+              alert('Book Deleted Successfully.')
+              this.$router.push("/")
+            })
+            .catch(error => {
+              console.log(error)
+            })
+      }
     }
   }
 }
