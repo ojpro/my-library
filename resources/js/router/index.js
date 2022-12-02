@@ -3,6 +3,7 @@ import Home from "@/Pages/Home.vue";
 import Upload from "@/Pages/Upload.vue";
 import Books from "@/Pages/Books.vue";
 import Search from "@/Pages/Search.vue";
+import Edit from "@/Pages/Edit.vue";
 
 const routes = [
     {
@@ -24,6 +25,11 @@ const routes = [
         path: "/search",
         name: "search",
         component: Search
+    },
+    {
+        path: "/edit/:id",
+        name: "edit",
+        component: Edit
     }
 ]
 

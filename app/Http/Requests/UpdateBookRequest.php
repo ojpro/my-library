@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\File;
 
 class UpdateBookRequest extends FormRequest
 {
@@ -25,9 +24,9 @@ class UpdateBookRequest extends FormRequest
     public function rules()
     {
         return [
-            "title" => ["string", "min:5", "unique:books,title," . $this->book["id"]],
+            "title" => ["string", "min:5"],
             "description" => ["string", "min:20"],
-            "file" => [File::types(['pdf', 'epub', 'mobi'])->max(50 * 1024), 'nullable']
+            "file" => ["nullable", "file", "mimes:pdf,epub,mobi", "max:51200"]
         ];
     }
 }

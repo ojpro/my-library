@@ -4,8 +4,7 @@
       <SearchField @searchFor="searchValue"></SearchField>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 container mx-auto mt-12">
-      <BookCard v-for="book in this.books" :key="book.id" :description="book.description"
-                :title="book.title"></BookCard>
+      <BookCard v-for="book in this.books" :key="book.id" :book="book"></BookCard>
     </div>
   </div>
 </template>

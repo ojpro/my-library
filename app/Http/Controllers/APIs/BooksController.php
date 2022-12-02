@@ -21,6 +21,7 @@ class BooksController extends Controller
     {
         // check if there is a search request
         if ($request->query('query')) {
+            // TODO sort returned data
             // search that query in the [title, description]
             $books = Book::query()
                 ->where('title', 'LIKE', "%" . request('query') . "%")
