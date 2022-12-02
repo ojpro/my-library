@@ -15,7 +15,20 @@
 
         <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">My Library</span>
       </router-link>
+
       <div class="flex md:order-2">
+        <!--  Theme Switcher    -->
+        <div class="relative">
+          <label class="flex relative items-center cursor-pointer mt-2 mr-4">
+            <input v-model="isDark" class="sr-only peer" type="checkbox" value="">
+            <div
+                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+              <span class="p-0.5">☀🌙</span>
+            </div>
+          </label>
+        </div>
+        <!--  Theme Switcher  - END   -->
+
         <router-link
             :to="{name:'upload'}"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -66,6 +79,53 @@
 
 <script>
 export default {
-  name: "Navbar"
+  name: "Navbar",
+  data() {
+    return {
+      theme: 'light',
+      isDark: false
+    }
+  },
+  created() {
+    this.getCurrentThemeFromLocalStorage()
+  },
+  watch: {
+    theme: function (theme) {
+      this.isDark = theme === 'dark'
+      this.toggleTheme(theme)
+    },
+    isDark: function (isDark) {
+      let theme = isDark ? 'dark' : 'light'
+      this.setThemeInLocalStorage(theme)
+    }
+  },
+  methods: {
+    getCurrentThemeFromLocalStorage: function () {
+      let theme = JSON.parse(localStorage.getItem('theme'))
+      if (theme) {
+        // set the theme for the site
+        this.theme = theme
+      } else {
+        // store a theme in the localstorage
+        this.setThemeInLocalStorage('dark')
+      }
+      return theme
+    },
+    setThemeInLocalStorage: function (value) {
+      let theme = JSON.stringify(value)
+      // store in localstorage
+      localStorage.setItem('theme', theme);
+      // Toggle the class
+      this.toggleTheme(value);
+    },
+    toggleTheme: function (theme) {
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+      this.theme = theme
+    }
+  }
 }
 </script>
