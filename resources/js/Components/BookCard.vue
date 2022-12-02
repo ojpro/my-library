@@ -1,7 +1,7 @@
 <template>
   <div class="shadow-md dark:bg-gray-800/90 rounded-md">
     <div class="p-5 flex flex-col h-full">
-      <a href="#">
+      <a :href="this.book.file_path" target="_blank">
         <h5 class="text-gray-900 font-bold text-2xl tracking-tight mb-2 dark:text-white">
           {{ this.book.title }}
         </h5>
