@@ -16,7 +16,7 @@
         <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">My Library</span>
       </router-link>
 
-      <div class="flex md:order-2">
+      <div class="flex md:order-2 ml-auto">
         <!--  Theme Switcher    -->
         <div class="relative">
           <label class="flex relative items-center cursor-pointer mt-2 mr-4">
@@ -33,7 +33,7 @@
             :to="{name:'upload'}"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             type="button">
-          Upload New Book
+          Upload a Book
         </router-link>
         <button aria-controls="navbar-cta" aria-expanded="false"
                 class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -47,7 +47,7 @@
           </svg>
         </button>
       </div>
-      <div id="navbar-cta" class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
+      <div id="navbar-cta" class="items-center justify-start hidden w-full md:flex md:w-auto md:order-1 ml-8">
         <ul class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
           <li>
             <router-link :to="{name:'home'}"
