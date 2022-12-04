@@ -1,10 +1,10 @@
 <template>
-  <div class="shadow-md dark:bg-gray-800/90 rounded-md m-1.5 min-w-fit">
+  <div class="shadow-md dark:bg-gray-800/90 rounded-md m-1.5">
     <a :href="this.book.file_path" target="_blank">
       <div class="p-2">
         <img :src="this.book.book_thumbnail" class="rounded-md">
       </div>
-      <div class="p-5 flex flex-col h-full">
+      <div class="p-5 flex flex-col">
         <h5 class="text-gray-900 font-bold text-2xl tracking-tight mb-2 dark:text-white">
           {{ this.book.title }}
         </h5>
