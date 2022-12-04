@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->text('description');
             // TODO: there must be a unique file_path
             $table->string('file_path');
+            $table->string('book_thumbnail');
             $table->timestamps();
         });
     }

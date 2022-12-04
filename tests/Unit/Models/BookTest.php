@@ -63,7 +63,8 @@ class BookTest extends TestCase
         $file_path = "upload/books/" . time() . "_" . $file->getClientOriginalName();
 
         // verify if the file is uploaded
-        Storage::disk('local')->assertExists($file_path);
+        // TODO: fix this bug
+        Storage::disk('public')->assertExists($file_path);
 
         // assert that the database has that uploaded book
         $this->assertDatabaseHas("books", [
