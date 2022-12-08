@@ -103,6 +103,10 @@ class BooksController extends Controller
         // check if the book exist
         $book = Book::findOrFail($book["id"]);
 
+        // declare thumbnail_path variable
+        // TODO: temporary
+        $thumbnail_path = null;
+
         // TODO: update only updated values
         // check if there is a file to upload
         if ($request->file()) {
