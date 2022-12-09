@@ -18,7 +18,8 @@ return new class extends Migration {
             $table->text('description');
             // TODO: there must be a unique file_path
             $table->string('file_path');
-            $table->string('book_thumbnail');
+            // TODO: use a default thumbnail
+            $table->string('book_thumbnail')->nullable();
             $table->timestamps();
         });
     }
