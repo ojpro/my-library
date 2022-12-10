@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -13,9 +14,20 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::all();
+        // TODO: need testing
+        // check if there is a search request
+        if ($request->query('query')) {
+            // TODO sort returned data
+            // search that query in the [name, description]
+            $categories = Category::query()
+                ->where('name', 'LIKE', "%" . request('query') . "%")
+                ->orWhere('description', 'LIKE', "%" . request('query') . "%")
+                ->get();
+        } else { // other ways return all categories
+            $categories = Category::all();
+        }
 
         return response()->json($categories);
     }
