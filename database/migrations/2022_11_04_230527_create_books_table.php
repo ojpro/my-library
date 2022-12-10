@@ -15,6 +15,7 @@ return new class extends Migration {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('title')->unique()->index();
+            $table->foreignId('category_id')->nullable()->constrained();
             $table->text('description');
             // TODO: there must be a unique file_path
             $table->string('file_path');

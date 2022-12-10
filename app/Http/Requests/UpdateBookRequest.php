@@ -25,6 +25,7 @@ class UpdateBookRequest extends FormRequest
     {
         return [
             "title" => ["string", "min:5"],
+            "category_id" => ['exists:categories,id'],
             "description" => ["string", "min:20"],
             "file" => ["nullable", "file", "mimes:pdf,epub,mobi", "max:51200"]
         ];

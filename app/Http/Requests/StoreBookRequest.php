@@ -26,6 +26,7 @@ class StoreBookRequest extends FormRequest
     {
         return [
             "title" => ["required", "string", "min:5", "unique:books,title"],
+            "category_id" => ['exists:categories,id'],
             "description" => ["required", "string", "min:20"],
             "file" => ["required", File::types(['pdf', 'epub', 'mobi'])->max(50 * 1024)]
         ];

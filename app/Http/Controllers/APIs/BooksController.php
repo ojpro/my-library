@@ -64,6 +64,7 @@ class BooksController extends Controller
         // save book info on the database
         Book::create([
             "title" => $request->title,
+            "category_id" => $request->category_id ?? null,
             "description" => $request->description,
             "file_path" => Storage::url($file_path),
             "book_thumbnail" => Storage::url("upload/books/" . $thumbnail_path)
@@ -130,6 +131,7 @@ class BooksController extends Controller
         // update book info on the database
         $book->update([
             "title" => $request->title,
+            "category_id" => $request->category_id ?? $book->category_id,
             "description" => $request->description,
             "file_path" => $file_path ?? $book->file_path,
             "book_thumbnail" => Storage::url("upload/books/" . $thumbnail_path) ?? $book->book_thumbnail
