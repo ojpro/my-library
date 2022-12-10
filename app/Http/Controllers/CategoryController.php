@@ -44,10 +44,10 @@ class CategoryController extends Controller
         $request->validated();
 
         // create the category
-        Category::create($request->all());
+        $category = Category::create($request->all());
 
         // return success message
-        return response()->json(['status' => 'success']);
+        return response()->json(['status' => 'success', 'category' => $category]);
 
     }
 
@@ -77,10 +77,10 @@ class CategoryController extends Controller
 
         $old_category = Category::findOrFail($category['id']);
 
-        $old_category->update($request->all());
+        $category = $old_category->update($request->all());
 
         //TODO: improve response messages
-        return response()->json(['status' => 'success']);
+        return response()->json(['status' => 'success', 'category' => $category]);
     }
 
     /**
