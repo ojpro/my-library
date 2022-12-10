@@ -54,6 +54,14 @@
       </div>
       <!-- !   Book Title    -->
 
+      <!--   Select Book Category   -->
+      <SearchFieldWithResults
+          :options="this.categories" :selectOption="selectedCategory" @category="searchFor"
+          @selected="selectCategory"
+      />
+      <!-- !   Select Book Category   -->
+
+
       <!--    Book Description    -->
       <div class="my-6">
         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="description">Book
@@ -96,15 +104,22 @@
 
 <script>
 
+import SearchFieldWithResults from "@/Components/Form/SearchFieldWithResults.vue";
 import axios from "axios";
 
 export default {
-  name: "Upload",
+  name: "Edit",
+  components: {
+    SearchFieldWithResults
+  },
   data() {
     return {
+      selectedCategory: {},
+      categories: {},
       form: {
         file: null,
         title: "",
+        category_id: null,
         description: "",
       },
       errors: {
@@ -118,6 +133,52 @@ export default {
     this.fetchBookInfo(this.getBookID())
   },
   methods: {
+    // catch typing event on the category field
+    searchFor: async function (value) {
+      await axios.get(`/api/category?query=${value}`)
+          .then(({data}) => {
+            this.categories = data
+            // add option to create new category
+            if (!this.categories.includes(value) || value !== '') {
+              let new_option = {
+                id: 0,
+                value: value,
+                name: `Create ${value} Category`
+              }
+              this.categories.unshift(new_option)
+            }
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    },
+    // handel category selection
+    selectCategory: function (category) {
+      if (category.id === 0) {
+        this.createCategory(category.value)
+      }
+      this.categories = {}
+      this.form.category_id = category.id
+    },
+    // create new category
+    createCategory: async function (categoryName) {
+      await axios.post("/api/category", {
+        name: categoryName
+      }).then(({data}) => {
+        this.form.category_id = data.category.id
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    fetchCategoryInfo: async function (categoryId) {
+      await axios.get(`/api/category/${categoryId}`)
+          .then(({data}) => {
+            this.selectedCategory = data
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    },
     getBookID: function () {
       return this.$route.params.id
     },
@@ -127,7 +188,13 @@ export default {
             this.form = {
               file: null,
               title: data.title,
+              category_id: data.category_id,
               description: data.description
+            }
+
+            // fetch info about book's category
+            if (this.form.category_id !== null) {
+              this.fetchCategoryInfo(this.form.category_id)
             }
           })
           .catch(error => {
@@ -151,6 +218,7 @@ export default {
         formData.append("file", this.form.file)
       }
       formData.append("title", this.form.title)
+      formData.append("category_id", this.form.category_id)
       formData.append("description", this.form.description)
       formData.append("_method", "PATCH")
       // sent request to upload the book

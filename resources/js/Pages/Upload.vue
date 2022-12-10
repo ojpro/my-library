@@ -52,6 +52,12 @@
       </div>
       <!-- !   Book Title    -->
 
+      <!--   Select Book Category   -->
+      <SearchFieldWithResults
+          :options="this.categories" @category="searchFor" @selected="selectCategory"
+      />
+      <!-- !   Select Book Category   -->
+
       <!--    Book Description    -->
       <div class="my-6">
         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="description">Book
@@ -101,16 +107,21 @@
 </template>
 
 <script>
-
+import SearchFieldWithResults from "@/Components/Form/SearchFieldWithResults.vue";
 import axios from "axios";
 
 export default {
   name: "Upload",
+  components: {
+    SearchFieldWithResults
+  },
   data() {
     return {
+      categories: {},
       form: {
         file: null,
         title: "",
+        category_id: null,
         description: "",
         accept_term: false
       },
@@ -122,6 +133,43 @@ export default {
     }
   },
   methods: {
+    // catch typing event on the category field
+    searchFor: async function (value) {
+      await axios.get(`/api/category?query=${value}`)
+          .then(({data}) => {
+            this.categories = data
+            // add option to create new category
+            if (!this.categories.includes(value) || value !== '') {
+              let new_option = {
+                id: 0,
+                value: value,
+                name: `Create ${value} Category`
+              }
+              this.categories.unshift(new_option)
+            }
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    },
+    // handel category selection
+    selectCategory: function (category) {
+      if (category.id === 0) {
+        this.createCategory(category.value)
+      }
+      this.categories = {}
+      this.form.category_id = category.id
+    },
+    // create new category
+    createCategory: async function (categoryName) {
+      await axios.post("/api/category", {
+        name: categoryName
+      }).then(({data}) => {
+        this.form.category_id = data.category.id
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     catchSelectedFile: function (event) {
       // store the selected file object
       let file = event.target.files || event.dataTransfer.files;
@@ -137,6 +185,7 @@ export default {
       let formData = new FormData();
       formData.append("file", this.form.file)
       formData.append("title", this.form.title)
+      formData.append("category_id", this.form.category_id)
       formData.append("description", this.form.description)
       // sent request to upload the book
       // TODO: use global configured axios
