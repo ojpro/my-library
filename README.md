@@ -67,8 +67,8 @@ To run tests, run the following command
 
 ## Roadmap
 
-- [ ] Set Book Thumbnail
-- [ ] Create Categories
+- [x] Set Book Thumbnail
+- [x] Create Categories
 - [ ] Add Authors
 - [ ] Rating
 
