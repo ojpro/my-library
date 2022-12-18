@@ -54,7 +54,7 @@
 
       <!--   Select Book Category   -->
       <SearchFieldWithResults
-          :options="this.categories" @category="searchFor" @selected="selectCategory"
+          :options="this.categories" selectOption="" @category="searchFor" @selected="selectCategory"
       />
       <!-- !   Select Book Category   -->
 
