@@ -9,6 +9,13 @@ Library with all functionality to save, organize and access any resources.
 - Single Page Application
 - Light/dark themes
 
+## Requirement 
+
+>   consider installing does packages before start installing the project
+
+- [php-imagick](https://www.php.net/manual/en/book.imagick.php) : used to generate books' thumbnails
+- [php-sqlite3](https://www.php.net/manual/en/book.sqlite3.php) : used for testing
+
 ## Run Locally
 
 Clone the project
